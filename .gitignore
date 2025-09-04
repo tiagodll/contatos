@@ -2,3 +2,6 @@
 *.db
 /logs/
 /.zed/
+
+# generated templ files
+*_templ.go
