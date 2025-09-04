@@ -1,0 +1,12 @@
+
+package templates
+
+import "contatos/model"
+
+templ ProfileFindResult(profiles []model.Profile) {
+	<ul>
+		for _, p := range profiles {
+			<li><a href="/">{ p.Name }</a></li>
+		}
+	</ul>
+}

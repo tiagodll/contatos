@@ -1,0 +1,19 @@
+package templates
+
+import "contatos/model"
+
+templ Dashboard(profile model.Profile, loginurl string) {
+	<div>
+		<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
+		<h2 class="header">Dashboard</h2>
+		Name: { profile.Name }
+		<a href="/profile">edit profile</a>
+		<br/>
+		<form hx-post="/find-profile" hx-sync="this:replace">
+			<label for="friend" class="block text-sm font-medium text-gray-700">Find friend</label>
+			<input type="text" id="q" name="q" class="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 border"/>
+			<button type="submit">Search</button>
+			<ul id="friend_search_result"></ul>
+		</form>
+	</div>
+}
