@@ -5,6 +5,7 @@ import (
 	"contatos/templates"
 	"contatos/util"
 	"net/http"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -59,4 +60,23 @@ func ProfileFind(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config uti
 	// }
 
 	templates.ProfileFindResult(*profiles).Render(r.Context(), w)
+}
+
+func FriendRequest(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	profileId := r.URL.Query().Get("profileId")
+	fr := &model.FriendRequest{
+		From:      userId,
+		To:        profileId,
+		Status:    "requested",
+		Timestamp: time.Now(),
+	}
+
+	profileRepo := model.NewProfileRepo(db)
+	p, err := profileRepo.Get(profileId)
+	if err != nil {
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		return
+	}
+	templates.FriendRequest(fr, p).Render(r.Context(), w)
 }

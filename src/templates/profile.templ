@@ -3,47 +3,49 @@ package templates
 import "contatos/model"
 
 templ Profile(p model.Profile) {
-	<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 mt-8">
-		<h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Profile</h1>
-		<form method="POST" action="/profile" class="space-y-6">
-			<div>
-				<label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-				<input type="text" id="first_name" name="first_name" value={ p.Name } class="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 border"/>
-			</div>
-			<button type="button" class="button-add-data" onclick="addItem()">add data</button>
-			<datalist id="dataTypeList">
-				<option value="Email"></option>
-				<option value="Phone"></option>
-				<option value="Website"></option>
-				<option value="Twitter"></option>
-				<option value="Facebook"></option>
-				<option value="Linkedin"></option>
-			</datalist>
-			<ol id="data-list">
-				for key, value := range p.Data {
-					<li class="flex gap-2 mb-2">
-						<input type="text" list="dataTypeList" name="custom_key" value={ key } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
-						<input type="text" name="custom_value" value={ value } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
-					</li>
-				}
-			</ol>
-			<button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 font-medium">Save Profile</button>
-			<a href="/profile" class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 font-medium ml-2">Cancel</a>
-		</form>
-		<template id="data-item-template">
-			<li class="flex gap-2 mb-2">
-				<input type="text" list="dataTypeList" name="custom_key" value="" class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
-				<input type="text" name="custom_value" value="" class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
-			</li>
-		</template>
-		<script type="text/javascript">
-		function addItem(){
-		    const template = document.getElementById('data-item-template');
-			const clone = template.content.cloneNode(true);
-			const list = document.getElementById('data-list');
-            list.appendChild(clone);
-            return false;
-		}
-		</script>
-	</div>
+	@layout("Dashboard") {
+		<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 mt-8">
+			<h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Profile</h1>
+			<form method="POST" action="/profile" class="space-y-6">
+				<div>
+					<label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+					<input type="text" id="first_name" name="first_name" value={ p.Name } class="mt-1 block w-full rounded-md border-gray-300 px-3 py-2 border"/>
+				</div>
+				<button type="button" class="button-add-data" onclick="addItem()">add data</button>
+				<datalist id="dataTypeList">
+					<option value="Email"></option>
+					<option value="Phone"></option>
+					<option value="Website"></option>
+					<option value="Twitter"></option>
+					<option value="Facebook"></option>
+					<option value="Linkedin"></option>
+				</datalist>
+				<ol id="data-list">
+					for key, value := range p.Data {
+						<li class="flex gap-2 mb-2">
+							<input type="text" list="dataTypeList" name="custom_key" value={ key } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
+							<input type="text" name="custom_value" value={ value } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
+						</li>
+					}
+				</ol>
+				<button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 font-medium">Save Profile</button>
+				<a href="/" class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 font-medium ml-2">Cancel</a>
+			</form>
+			<template id="data-item-template">
+				<li class="flex gap-2 mb-2">
+					<input type="text" list="dataTypeList" name="custom_key" value="" class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
+					<input type="text" name="custom_value" value="" class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
+				</li>
+			</template>
+			<script type="text/javascript">
+    		function addItem(){
+    		    const template = document.getElementById('data-item-template');
+       			const clone = template.content.cloneNode(true);
+       			const list = document.getElementById('data-list');
+                list.appendChild(clone);
+                return false;
+    		}
+    		</script>
+		</div>
+	}
 }

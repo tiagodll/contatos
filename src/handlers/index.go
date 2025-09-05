@@ -29,13 +29,17 @@ func IndexHandler(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config ut
 		return
 	}
 
+	user_id := tokendata["sub"].(string)
+
 	profileRepo := model.NewProfileRepo(db)
-	profile, err := profileRepo.Get(tokendata["sub"].(string))
+	profile, err := profileRepo.Get(user_id)
 	if err != nil {
 		// user should always have a profile, if not, create it
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
 	}
+	friendsRepo := model.NewFriendRepo(db)
+	requests, err := friendsRepo.ListTo(user_id)
 
-	templates.Dashboard(*profile, config.GetLoginUrl()).Render(r.Context(), w)
+	templates.Dashboard(*profile, *requests, config.GetLoginUrl()).Render(r.Context(), w)
 }

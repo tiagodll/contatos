@@ -4,9 +4,11 @@ package templates
 import "contatos/model"
 
 templ ProfileFindResult(profiles []model.Profile) {
-	<ul>
-		for _, p := range profiles {
-			<li><a href="/">{ p.Name }</a></li>
-		}
-	</ul>
+	@layout("Find friends") {
+		<ul>
+			for _, p := range profiles {
+				<li><a href={ "/friend-request?profileId=" + p.ID }>{ p.Name }</a></li>
+			}
+		</ul>
+	}
 }
