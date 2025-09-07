@@ -53,8 +53,8 @@ func (r FriendRepository) ListTo(from string) (*[]FriendRequestProfile, error) {
 
 func (r FriendRepository) SaveFriendRequest(fr FriendRequest) error {
 	_, err := r.db.Exec(`
-		INSERT OR REPLACE INTO friend_request (from, to, message, status, timestamp)
-		VALUES (?, ?, ?, ?, ?, datetime('now'))`,
-		fr)
+		INSERT OR REPLACE INTO friend_request ([from], [to], [message], [status], [timestamp])
+		VALUES (?, ?, ?, ?, datetime('now'))`,
+		fr.From, fr.To, fr.Message, fr.Status)
 	return err
 }

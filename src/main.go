@@ -80,6 +80,7 @@ func main() {
 	HandleAuth("POST /profile", handlers.ProfileSave)
 	HandleAuth("POST /find-profile", handlers.ProfileFind)
 	HandleAuth("GET /friend-request", handlers.FriendRequest)
+	HandleAuth("POST /friend-request", handlers.FriendRequestSave)
 
 	// Auth endpoint for testing
 	// Handle("/api/generate-token", func(w http.ResponseWriter, r *http.Request) { generateTokenHandler(db, w, r) })

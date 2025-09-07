@@ -4,6 +4,7 @@ import (
 	"contatos/model"
 	"contatos/templates"
 	"contatos/util"
+	"log"
 	"net/http"
 	"time"
 
@@ -79,4 +80,32 @@ func FriendRequest(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config u
 		return
 	}
 	templates.FriendRequest(fr, p).Render(r.Context(), w)
+}
+
+func FriendRequestSave(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		log.Printf("Invalid form data: %v", err)
+		return
+	}
+
+	// Create profile with form data
+	fr := model.FriendRequest{
+		From:      userId,
+		To:        r.FormValue("to"),
+		Message:   r.FormValue("message"),
+		Status:    "requested",
+		Timestamp: time.Now(),
+	}
+
+	fRepo := model.NewFriendRepo(db)
+	err = fRepo.SaveFriendRequest(fr)
+	if err != nil {
+		http.Error(w, "Saving friend request error", http.StatusBadRequest)
+		log.Printf("Saving friend request: %v", err)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
