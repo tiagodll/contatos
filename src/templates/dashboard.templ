@@ -2,7 +2,7 @@ package templates
 
 import "contatos/model"
 
-templ Dashboard(profile model.Profile, requests []model.FriendRequestProfile, loginurl string) {
+templ Dashboard(profile model.Profile, requests []model.FriendRequestProfile, friends []model.FriendProfile, loginurl string) {
 	@layout("Dashboard") {
 		<div>
 			<h2 class="header">Dashboard</h2>
@@ -15,13 +15,28 @@ templ Dashboard(profile model.Profile, requests []model.FriendRequestProfile, lo
 				<button type="submit">Search</button>
 				<ul id="friend_search_result"></ul>
 			</form>
-			for _, r := range requests {
-				<li>
-					<h3>{ r.Name }</h3>
-					<p>{ r.Message }</p>
-					<a href="">accept</a>
-					<a href="">reject</a>
-				</li>
+			if requests != nil {
+				<ul>
+					for _, r := range requests {
+						<li>
+							<h4>{ r.Name }</h4>
+							<p>{ r.Message }</p>
+							<a href={ "/friend-request/" + r.From + "/accept" }>accept</a>
+							<a href={ "/friend-request/" + r.From + "/reject" }>reject</a>
+						</li>
+					}
+				</ul>
+			}
+			if friends != nil {
+				<h2>Friends</h2>
+				<ul>
+					for _, f := range friends {
+						<li>
+							<h4>{ f.Name }</h4>
+							<a href={ "/friend/" + f.ID + "" }>E</a>
+						</li>
+					}
+				</ul>
 			}
 		</div>
 	}

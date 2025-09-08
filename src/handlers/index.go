@@ -39,7 +39,8 @@ func IndexHandler(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config ut
 		return
 	}
 	friendsRepo := model.NewFriendRepo(db)
-	requests, err := friendsRepo.ListTo(user_id)
+	requests, err := friendsRepo.ListFriendRequests(user_id)
+	friends, _ := friendsRepo.ListFriends(user_id)
 
-	templates.Dashboard(*profile, *requests, config.GetLoginUrl()).Render(r.Context(), w)
+	templates.Dashboard(*profile, *requests, *friends, config.GetLoginUrl()).Render(r.Context(), w)
 }

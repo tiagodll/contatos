@@ -1,0 +1,18 @@
+package templates
+
+import "contatos/model"
+
+templ ProfileView(p model.Profile) {
+	@layout("Profile") {
+		<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 mt-8">
+			<h2>{ p.Name }</h2>
+			<ol id="data-list">
+				for key, value := range p.Data {
+					<li class="flex gap-2 mb-2">
+						{ key }={ value }
+					</li>
+				}
+			</ol>
+		</div>
+	}
+}

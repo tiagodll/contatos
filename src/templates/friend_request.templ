@@ -5,16 +5,16 @@ import "contatos/model"
 templ FriendRequest(r *model.FriendRequest, p *model.Profile) {
 	@layout("Friend Request") {
 		<form method="POST" action="friend-request">
-			<input type="text" name="From" value={ r.From }/>
-			<input type="text" name="To" value={ r.To }/>
-			<input type="text" name="Status" value={ r.Status }/>
-			<input type="text" name="CreatedAt" value={ r.Timestamp.String() }/>
+			<input type="text" name="from" value={ r.From }/>
+			<input type="text" name="to" value={ r.To }/>
+			<input type="text" name="status" value={ r.Status }/>
+			<input type="text" name="created_at" value={ r.Timestamp.String() }/>
 			<br/>
 			request contact from:
 			<h2>{ p.Name }</h2>
 			reason:
 			<br/>
-			<textarea name="Message">{ r.Message }</textarea>
+			<textarea name="message">{ r.Message }</textarea>
 			<br/>
 			<button type="submit">Search</button>
 		</form>

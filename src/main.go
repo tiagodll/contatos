@@ -79,8 +79,11 @@ func main() {
 	HandleAuth("GET /profile", handlers.ProfileEdit)
 	HandleAuth("POST /profile", handlers.ProfileSave)
 	HandleAuth("POST /find-profile", handlers.ProfileFind)
+	HandleAuth("GET /friend/{id}", handlers.ProfileView)
 	HandleAuth("GET /friend-request", handlers.FriendRequest)
 	HandleAuth("POST /friend-request", handlers.FriendRequestSave)
+	HandleAuth("GET /friend-request/{from}/accept", handlers.AcceptFriendRequest)
+	HandleAuth("GET /friend-request/{from}/reject", handlers.RejectFriendRequest)
 
 	// Auth endpoint for testing
 	// Handle("/api/generate-token", func(w http.ResponseWriter, r *http.Request) { generateTokenHandler(db, w, r) })

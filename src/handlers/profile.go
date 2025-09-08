@@ -11,6 +11,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+func ProfileView(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	profileRepo := model.NewProfileRepo(db)
+	profile, err := profileRepo.Get(r.PathValue("id"))
+	if err != nil {
+		profile = &model.Profile{}
+	}
+
+	templates.ProfileView(*profile).Render(r.Context(), w)
+}
 func ProfileEdit(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
 
 	profileRepo := model.NewProfileRepo(db)
@@ -21,11 +31,11 @@ func ProfileEdit(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config uti
 
 	templates.Profile(*profile).Render(r.Context(), w)
 }
-
 func ProfileSave(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
 
 	err := r.ParseForm()
 	if err != nil {
+		log.Printf("Invalid form data: %v", err)
 		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		return
 	}
@@ -76,6 +86,7 @@ func FriendRequest(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config u
 	profileRepo := model.NewProfileRepo(db)
 	p, err := profileRepo.Get(profileId)
 	if err != nil {
+		log.Printf("Invalid form data: %v", err)
 		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		return
 	}
@@ -86,8 +97,8 @@ func FriendRequestSave(db *sqlx.DB, w http.ResponseWriter, r *http.Request, conf
 
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		log.Printf("Invalid form data: %v", err)
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		return
 	}
 
@@ -103,8 +114,42 @@ func FriendRequestSave(db *sqlx.DB, w http.ResponseWriter, r *http.Request, conf
 	fRepo := model.NewFriendRepo(db)
 	err = fRepo.SaveFriendRequest(fr)
 	if err != nil {
-		http.Error(w, "Saving friend request error", http.StatusBadRequest)
 		log.Printf("Saving friend request: %v", err)
+		http.Error(w, "Saving friend request error", http.StatusBadRequest)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func AcceptFriendRequest(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	fr := model.FriendRequest{
+		From: r.PathValue("from"),
+		To:   userId,
+	}
+
+	fRepo := model.NewFriendRepo(db)
+	err := fRepo.AcceptFriendRequest(fr)
+	if err != nil {
+		log.Printf("Accepting friend request: %v", err)
+		http.Error(w, "Accepting friend request error", http.StatusBadRequest)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func RejectFriendRequest(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	fr := model.FriendRequest{
+		From: r.PathValue("from"),
+		To:   userId,
+	}
+
+	fRepo := model.NewFriendRepo(db)
+	err := fRepo.RejectFriendRequest(fr)
+	if err != nil {
+		log.Printf("Accepting friend request: %v", err)
+		http.Error(w, "Accepting friend request error", http.StatusBadRequest)
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
