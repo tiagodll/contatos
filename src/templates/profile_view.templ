@@ -2,7 +2,7 @@ package templates
 
 import "contatos/model"
 
-templ ProfileView(p model.Profile) {
+templ ProfileView(p model.FriendProfile) {
 	@layout("Profile") {
 		<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 mt-8">
 			<h2>{ p.Name }</h2>
@@ -13,6 +13,11 @@ templ ProfileView(p model.Profile) {
 					</li>
 				}
 			</ol>
+			<h2>Notes</h2>
+			<form method="POST" action={ "/friend/" + p.ID + "/notes" }>
+				<textarea name="notes">{ p.Notes }</textarea>
+				<button type="submit">Save</button>
+			</form>
 		</div>
 	}
 }

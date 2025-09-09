@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS friend_request (
 
 
 CREATE TABLE IF NOT EXISTS friends (
-    [from]          TEXT NOT NULL,
-    [to]            TEXT NOT NULL,
+    [user_id]          TEXT NOT NULL,
+    [friend_id]            TEXT NOT NULL,
     [notes]         TEXT NOT NULL DEFAULT '',
-    CONSTRAINT unique_friend_request UNIQUE ([from], [to])
+    CONSTRAINT unique_friend_request UNIQUE ([user_id], [friend_id])
 );

@@ -32,8 +32,7 @@ templ Dashboard(profile model.Profile, requests []model.FriendRequestProfile, fr
 				<ul>
 					for _, f := range friends {
 						<li>
-							<h4>{ f.Name }</h4>
-							<a href={ "/friend/" + f.ID + "" }>E</a>
+							{ f.Name } - <a href={ "/friend/" + f.ID + "" }>Edit</a>
 						</li>
 					}
 				</ul>
