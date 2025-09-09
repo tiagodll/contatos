@@ -25,6 +25,7 @@ templ Profile(p model.Profile) {
 						<li class="flex gap-2 mb-2">
 							<input type="text" list="dataTypeList" name="custom_key" value={ key } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
 							<input type="text" name="custom_value" value={ value } class="flex-1 rounded-md border-gray-300 px-3 py-2 border"/>
+							<button type="button" class="button-add-data" onclick="removeItem(event)">x</button>
 						</li>
 					}
 				</ol>
@@ -38,12 +39,15 @@ templ Profile(p model.Profile) {
 				</li>
 			</template>
 			<script type="text/javascript">
-    		function addItem(){
+			function addItem(){
     		    const template = document.getElementById('data-item-template');
        			const clone = template.content.cloneNode(true);
        			const list = document.getElementById('data-list');
                 list.appendChild(clone);
-                return false;
+    		}
+    		function removeItem(e){
+       			const list = document.getElementById('data-list');
+                list.removeChild(e.target.parentElement);
     		}
     		</script>
 		</div>
