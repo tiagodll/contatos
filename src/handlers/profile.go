@@ -64,7 +64,7 @@ func ProfileSave(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config uti
 func ProfileFind(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
 
 	profileRepo := model.NewProfileRepo(db)
-	profiles, _ := profileRepo.Search(r.FormValue("q"))
+	profiles, _ := profileRepo.Search(r.FormValue("q"), userId)
 	// if err != nil {
 	// 	profiles = &model.Profile{}
 	// }

@@ -33,3 +33,20 @@ func UpdateNotes(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config uti
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+func Unfriend(db *sqlx.DB, w http.ResponseWriter, r *http.Request, config util.Config, userId string) {
+
+	fr := model.Friend{
+		FriendId: r.PathValue("id"),
+		UserId:   userId,
+	}
+
+	repo := model.NewFriendRepo(db)
+	err := repo.Unfriend(fr)
+	if err != nil {
+		log.Printf("Accepting friend request: %v", err)
+		http.Error(w, "Accepting friend request error", http.StatusBadRequest)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}

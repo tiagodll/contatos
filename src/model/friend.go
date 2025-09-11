@@ -85,3 +85,16 @@ func (r FriendRepository) ListFriends(userId string) (*[]FriendProfile, error) {
 	}
 	return &profiles, nil
 }
+func (r FriendRepository) Unfriend(fr Friend) error {
+	_, err := r.db.Exec(`DELETE FROM friends WHERE [user_id]=? AND [friend_id] = ?`, fr.UserId, fr.FriendId)
+	if err != nil {
+		log.Printf("Error querying the db: %v", err)
+	}
+
+	_, err = r.db.Exec(`DELETE FROM friends WHERE [user_id]=? AND [friend_id] = ?`, fr.FriendId, fr.UserId)
+	if err != nil {
+		log.Printf("Error querying the db: %v", err)
+	}
+
+	return err
+}

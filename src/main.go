@@ -81,6 +81,7 @@ func main() {
 	HandleAuth("POST /find-profile", handlers.ProfileFind)
 	HandleAuth("GET /friend/{id}", handlers.ProfileView)
 	HandleAuth("POST /friend/{id}/notes", handlers.UpdateNotes)
+	HandleAuth("DELETE /friend/{id}", handlers.Unfriend)
 	HandleAuth("GET /friend-request", handlers.FriendRequest)
 	HandleAuth("POST /friend-request", handlers.FriendRequestSave)
 	HandleAuth("GET /friend-request/{from}/accept", handlers.AcceptFriendRequest)

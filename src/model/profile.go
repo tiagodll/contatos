@@ -46,9 +46,9 @@ func (r ProfileRepository) Save(p Profile) error {
 	return err
 }
 
-func (r ProfileRepository) Search(q string) (*[]Profile, error) {
+func (r ProfileRepository) Search(q string, userId string) (*[]Profile, error) {
 	profiles := []Profile{}
-	rows, err := r.db.Queryx("SELECT id, name, data FROM profiles WHERE name LIKE ?", q+"%")
+	rows, err := r.db.Queryx("SELECT id, name, data FROM profiles WHERE id != ? AND name LIKE ?", userId, q+"%")
 	if err != nil {
 		return nil, err
 	}
