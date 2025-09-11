@@ -1,6 +1,7 @@
 package main
 
 import (
+	"contatos/api"
 	"contatos/handlers"
 	"contatos/util"
 	"fmt"
@@ -48,7 +49,6 @@ func main() {
 				return
 			}
 
-			// Basic validation: check if the cookie value is not empty
 			if cookie.Value == "" {
 				http.Error(w, "Empty cookie value", http.StatusUnauthorized)
 				return
@@ -71,10 +71,29 @@ func main() {
 		})
 	}
 
+	HandleApiAuth := func(url string, handler func(db *sqlx.DB, w http.ResponseWriter, r *http.Request, c util.Config, userID string)) {
+		http.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
+
+			authHeader := r.Header.Get("Authorization")
+			token := authHeader[7:]
+
+			userID, err := util.ValidateJWT(token, config.Jwt)
+			if err != nil {
+				util.RespondWithError(w, http.StatusUnauthorized, fmt.Sprintf("Invalid token: %v", err))
+				return
+			}
+
+			r.Header.Set("X-User-ID", userID)
+			handler(db, w, r, config, userID)
+		})
+	}
+
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(config.StaticPath))))
 
 	Handle("/callback", handlers.LoginCallbackHandler)
 	Handle("/login", handlers.LoginHandler)
+
+	HandleApiAuth("GET /api/contactlist", api.GetContactList)
 
 	HandleAuth("GET /profile", handlers.ProfileEdit)
 	HandleAuth("POST /profile", handlers.ProfileSave)

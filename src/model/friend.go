@@ -12,6 +12,11 @@ type Friend struct {
 	FriendId string `json:"friend_id"`
 	Notes    string `json:"notes"`
 }
+type FriendName struct {
+	ID    string  `json:"id"`
+	Name  string  `json:"name"`
+	Image *string `json:"image"`
+}
 type FriendProfile struct {
 	ID    string            `json:"id"`
 	Name  string            `json:"name"`
@@ -97,4 +102,18 @@ func (r FriendRepository) Unfriend(fr Friend) error {
 	}
 
 	return err
+}
+
+func (r FriendRepository) ListFriendNames(userId string) (*[]FriendName, error) {
+	list := []FriendName{}
+	err := r.db.Select(&list,
+		`SELECT p.id, p.name, p.image
+		FROM friends f
+		JOIN profiles p ON f.[friend_id]=p.[id]
+		WHERE f.[user_id] = ?`, userId)
+	if err != nil {
+		log.Printf("Error querying the db: %v", err)
+		return nil, err
+	}
+	return &list, nil
 }
