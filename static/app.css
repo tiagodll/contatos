@@ -1,0 +1,75 @@
+body {
+    margin: 40px auto;
+    max-width: 650px;
+    line-height: 1.6;
+    font-size: 18px;
+    color: #444;
+    padding: 0 10px;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+dialog:modal {
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+input[type="password"],
+input[type="text"] {
+    padding: 3px;
+    border-radius: 3px;
+    border-color: #bbb;
+    border-width: 1px;
+    border-bottom-color: black;
+    border-bottom-width: 2px;
+    width: 100%;
+}
+input[type="password"]:focus,
+input[type="text"]:focus {
+    border-bottom-color: blue;
+}
+input[type="password"]:hover,
+input[type="text"]:hover {
+    background: #eee;
+}
+:root {
+    --color-primary: #036ac4;
+    --color-primary-highlight: #4791d1;
+
+    --color-secondary: #fff;
+    --color-secondary-highlight: #f0f0f0;
+}
+
+a.button,
+button,
+input[type="submit"] {
+    align-items: center;
+    border-radius: 4px;
+    background: var(--color-secondary);
+    border: 0px;
+    color: black;
+    padding: 6px 16px;
+    border: solid #666 1px;
+    font-size: 0.8em;
+}
+a.button:hover,
+button:hover,
+input[type="submit"]:hover {
+    cursor: pointer;
+    background: var(--color-secondary-highlight);
+}
+
+button.primary,
+input[type="submit"].primary {
+    color: white;
+    background: var(--color-primary);
+}
+button.primary:hover,
+input[type="submit"].primary:hover {
+    color: white;
+    background: var(--color-primary-highlight);
+}

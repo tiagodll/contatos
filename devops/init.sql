@@ -18,10 +18,21 @@ CREATE TABLE IF NOT EXISTS friend_request (
     CONSTRAINT unique_friend_request UNIQUE ([from], [to])
 );
 
-
 CREATE TABLE IF NOT EXISTS friends (
     [user_id]          TEXT NOT NULL,
-    [friend_id]            TEXT NOT NULL,
-    [notes]         TEXT NOT NULL DEFAULT '',
+    [friend_id]        TEXT NOT NULL,
+    [notes]            TEXT NOT NULL DEFAULT '',
     CONSTRAINT unique_friend_request UNIQUE ([user_id], [friend_id])
+);
+
+CREATE TABLE IF NOT EXISTS apps (
+    [id]          TEXT NOT NULL,
+    [key]         TEXT NOT NULL,
+    [name]        TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS authorizes_apps (
+    [user_id]          TEXT NOT NULL,
+    [app_id]        TEXT NOT NULL,
+    [timestamp]   TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

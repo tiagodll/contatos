@@ -106,9 +106,6 @@ func main() {
 	HandleAuth("GET /friend-request/{from}/accept", handlers.AcceptFriendRequest)
 	HandleAuth("GET /friend-request/{from}/reject", handlers.RejectFriendRequest)
 
-	// Auth endpoint for testing
-	// Handle("/api/generate-token", func(w http.ResponseWriter, r *http.Request) { generateTokenHandler(db, w, r) })
-
 	Handle("/", handlers.IndexHandler)
 
 	currentpwd, _ := os.Getwd()
